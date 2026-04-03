@@ -58,4 +58,35 @@ export const usersService = {
 
     return token;
   },
+
+  async getCurrentUser(token: string) {
+    // Find session and user
+    const sessionWithUser = await db.query.sessions.findFirst({
+      where: eq(sessions.token, token),
+      with: {
+        userId: true, // This assumes Drizzle is configured with relations
+      },
+    });
+
+    // If Drizzle relations aren't setup yet, we do it manually
+    const session = await db.query.sessions.findFirst({
+      where: eq(sessions.token, token),
+    });
+
+    if (!session || !session.userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, session.userId),
+    });
+
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  },
 };
