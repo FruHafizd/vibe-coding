@@ -8,6 +8,6 @@ export default defineConfig({
     host: "localhost",
     user: "root",
     password: "",
-    database: "test_db",
+    database: "vibe_coding_db",
   },
 });

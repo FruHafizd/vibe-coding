@@ -1,8 +1,9 @@
-// Main entry point for the ElysiaJS server
 import { Elysia } from "elysia";
 import { db } from "./db";
+import { usersRoutes } from "./routes/users-routes";
 
 const app = new Elysia()
+  .use(usersRoutes)
   .get("/", () => "Hello World")
   .get("/test-db", async () => {
     try {
