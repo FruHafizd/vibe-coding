@@ -1,3 +1,4 @@
+// Main entry point for the ElysiaJS server
 import { Elysia } from "elysia";
 import { db } from "./db";
 
