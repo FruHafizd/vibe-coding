@@ -7,7 +7,7 @@ const connection = await mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "test_db", // placeholder database name
+  database: "vibe_coding_db",
 });
 
 export const db = drizzle(connection, { schema, mode: "default" });
