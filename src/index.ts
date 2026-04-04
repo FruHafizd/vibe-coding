@@ -1,7 +1,25 @@
 import { Elysia } from "elysia";
+import { swagger } from "@elysiajs/swagger";
 import { usersRoutes } from "./routes/users-routes";
 
 export const app = new Elysia()
+  .use(swagger({
+    path: '/swagger',
+    documentation: {
+      info: {
+        title: 'VibeEngginer API Documentation',
+        version: '1.0.0'
+      },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer'
+          }
+        }
+      }
+    }
+  }))
   .onError(({ code, error, set }) => {
     const message = error instanceof Error ? error.message : String(error);
 
