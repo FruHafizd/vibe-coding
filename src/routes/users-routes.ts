@@ -12,9 +12,14 @@ export const usersRoutes = new Elysia({ prefix: "/api/users" })
       email: t.String({ format: 'email', maxLength: 255 }),
       password: t.String({ maxLength: 255 }),
     }),
-    response: t.Object({
-      data: t.String()
-    }),
+    response: {
+      200: t.Object({
+        data: t.String()
+      }),
+      400: t.Object({
+        error: t.String()
+      }, { description: "Email sudah terdaftar atau kesalahan validasi." })
+    },
     detail: {
       summary: "Registrasi Pengguna Baru",
       tags: ["Users"],
@@ -29,9 +34,14 @@ export const usersRoutes = new Elysia({ prefix: "/api/users" })
       email: t.String({ format: 'email' }),
       password: t.String(),
     }),
-    response: t.Object({
-      data: t.String()
-    }),
+    response: {
+      200: t.Object({
+        data: t.String()
+      }),
+      401: t.Object({
+        error: t.String()
+      }, { description: "Email atau password salah." })
+    },
     detail: {
       summary: "Login Pengguna",
       tags: ["Users"],
@@ -45,14 +55,19 @@ export const usersRoutes = new Elysia({ prefix: "/api/users" })
     const data = await usersService.getCurrentUser(token);
     return { data };
   }, {
-    response: t.Object({
-      data: t.Object({
-        id: t.Number(),
-        name: t.String(),
-        email: t.String(),
-        createdAt: t.Nullable(t.Date())
-      })
-    }),
+    response: {
+      200: t.Object({
+        data: t.Object({
+          id: t.Number(),
+          name: t.String(),
+          email: t.String(),
+          createdAt: t.Nullable(t.Date())
+        })
+      }),
+      401: t.Object({
+        error: t.String()
+      }, { description: "Token tidak valid atau tidak ditemukan." })
+    },
     detail: {
       summary: "Ambil Profil Saat Ini",
       tags: ["Users"],
@@ -66,9 +81,14 @@ export const usersRoutes = new Elysia({ prefix: "/api/users" })
     await usersService.logout(token);
     return { data: "OK" };
   }, {
-    response: t.Object({
-      data: t.String()
-    }),
+    response: {
+      200: t.Object({
+        data: t.String()
+      }),
+      401: t.Object({
+        error: t.String()
+      }, { description: "Sesi tidak ditemukan atau token tidak valid." })
+    },
     detail: {
       summary: "Logout Sesi",
       tags: ["Users"],
