@@ -12,6 +12,9 @@ export const usersRoutes = new Elysia({ prefix: "/api/users" })
       email: t.String({ format: 'email', maxLength: 255 }),
       password: t.String({ maxLength: 255 }),
     }),
+    response: t.Object({
+      data: t.String()
+    }),
     detail: {
       summary: "Registrasi Pengguna Baru",
       tags: ["Users"],
@@ -26,6 +29,9 @@ export const usersRoutes = new Elysia({ prefix: "/api/users" })
       email: t.String({ format: 'email' }),
       password: t.String(),
     }),
+    response: t.Object({
+      data: t.String()
+    }),
     detail: {
       summary: "Login Pengguna",
       tags: ["Users"],
@@ -39,6 +45,14 @@ export const usersRoutes = new Elysia({ prefix: "/api/users" })
     const data = await usersService.getCurrentUser(token);
     return { data };
   }, {
+    response: t.Object({
+      data: t.Object({
+        id: t.Number(),
+        name: t.String(),
+        email: t.String(),
+        createdAt: t.Nullable(t.Date())
+      })
+    }),
     detail: {
       summary: "Ambil Profil Saat Ini",
       tags: ["Users"],
@@ -52,6 +66,9 @@ export const usersRoutes = new Elysia({ prefix: "/api/users" })
     await usersService.logout(token);
     return { data: "OK" };
   }, {
+    response: t.Object({
+      data: t.String()
+    }),
     detail: {
       summary: "Logout Sesi",
       tags: ["Users"],
