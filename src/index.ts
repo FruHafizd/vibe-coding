@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import { usersRoutes } from "./routes/users-routes";
 
-const app = new Elysia()
+export const app = new Elysia()
   .onError(({ code, error, set }) => {
     const message = error instanceof Error ? error.message : String(error);
 
@@ -39,8 +39,9 @@ const app = new Elysia()
   .get("/test-db", async () => {
     return { status: "connected" };
   })
-  .listen(3000);
-
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+if (import.meta.main) {
+  app.listen(3000);
+  console.log(
+    `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+  );
+}
